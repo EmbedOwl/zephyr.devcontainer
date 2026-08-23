@@ -1,0 +1,35 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.elf
+*.hex
+*.bin
+*.uf2
+*.deb
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+venv/
+.venv/
+
+# IDE
+.vscode/settings.json
+.vscode/launch.json
+.DS_Store
+*.swp
+*.swo
+
+# West
+.west/
+
+# Secrets and sensitive configuration
+**/secrets.h
+secrets.h
+*.secret
+*.key
+*.pem
+!**/secrets.h.template

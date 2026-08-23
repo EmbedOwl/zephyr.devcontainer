@@ -1,0 +1,28 @@
+{
+    "folders": [
+        {
+            "path": "/workspace",
+            "name": "Zephyr Projects"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/build": true,
+            "**/.git": false,
+            "**/secrets.h": true
+        },
+        "search.exclude": {
+            "**/build": true,
+            "**/node_modules": true
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.cpptools",
+            "ms-vscode.cmake-tools",
+            "twxs.cmake",
+            "marus25.cortex-debug",
+            "GitHub.copilot"
+        ]
+    }
+}

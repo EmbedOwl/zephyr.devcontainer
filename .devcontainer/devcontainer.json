@@ -1,0 +1,38 @@
+{
+  "name": "Zephyr RTOS Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceFolder": "/workspace",
+  "remoteUser": "root",
+  
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "source=/dev/bus/usb,target=/dev/bus/usb,type=bind",
+    "type=bind,source=/run/media,target=/run/media,bind-propagation=rshared",
+    "type=bind,source=/dev,target=/dev,bind-propagation=rslave"
+  ],
+  
+  "postCreateCommand": "echo '✅ Zephyr Dev Container ready'",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake",
+        "marus25.cortex-debug"
+      ],
+      "settings": {
+        "C_Cpp.default.compilerPath": "/usr/bin/arm-none-eabi-gcc",
+        "cmake.configureOnOpen": false
+      }
+    }
+  },
+  
+  "forwardPorts": [8123],
+  
+  "runArgs": [
+    "--privileged"
+  ]
+}
