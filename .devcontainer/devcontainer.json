@@ -3,7 +3,7 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace/apps",
   "remoteUser": "root",
   
   "mounts": [
@@ -13,7 +13,7 @@
     "type=bind,source=/dev,target=/dev,bind-propagation=rslave"
   ],
   
-  "postCreateCommand": "echo '✅ Zephyr Dev Container ready'",
+  "postCreateCommand": "mkdir -p /workspace/apps && echo '✅ Zephyr Dev Container ready'",
   
   "customizations": {
     "vscode": {

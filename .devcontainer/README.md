@@ -65,32 +65,17 @@ A complete development environment for Zephyr RTOS projects on Raspberry Pi Pico
 ```
 zephyr-devcontainer/          ← This repo
 ├── .devcontainer/
-│   ├── devcontainer.json     ← VS Code config
-│   ├── setup.sh              ← Installation script
+│   ├── devcontainer.json     ← VS Code config (workspaceFolder = /workspace/apps)
+│   ├── Dockerfile
 │   └── zephyr.code-workspace ← Loads project tasks
 ├── README.md                 ← This file
-└── LICENSE
-
-/workspace                     ← Mounted from outside
-└── zephyr-projects/          ← Your separate project repo
-    ├── apps/
-    ├── .vscode/tasks.json
-    └── docs/
+└── apps/                     ← Opened by default in VS Code, local only (.gitignore)
+    ├── 01_hello_world/
+    ├── 02_random/
+    └── 05_mqtt/
 ```
 
-## Mounting Custom Projects
-
-The container mounts `/workspace` which can contain:
-- Your Zephyr project repository
-- Multiple projects side-by-side
-- Any other Zephyr-based project
-
-To use a different project:
-```bash
-# Inside container
-cd /workspace
-git clone <your-project-repo> .
-```
+The container mounts the repo root to `/workspace`, but VS Code opens directly into `/workspace/apps` so devcontainer files stay out of the way. To browse `.devcontainer`, `docs/`, or other repo-root files, open `/workspace` instead (Command Palette → "File: Open Folder").
 
 ## USB Device Access
 

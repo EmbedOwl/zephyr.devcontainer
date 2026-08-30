@@ -33,7 +33,7 @@ The first build takes about 5–10 minutes (toolchain and SDK download). Afterwa
 
 ## Structure: Devcontainer and Projects Are Separate
 
-This repository contains **only the devcontainer infrastructure** – no application code of its own. The folder this repo lives in is mounted 1:1 into the container at `/workspace` (see `workspaceFolder` in `.devcontainer/devcontainer.json`).
+This repository contains **only the devcontainer infrastructure** – no application code of its own. The folder this repo lives in is mounted 1:1 into the container at `/workspace`. VS Code opens directly into `/workspace/apps`, so `.devcontainer`, `docs/`, and this `README.md` stay out of the way in day-to-day work.
 
 Your own Zephyr applications go into subfolders under `apps/` – one folder per project, each with its own `CMakeLists.txt`, `prj.conf`, `boards/` and `src/` directory:
 
@@ -41,9 +41,9 @@ Your own Zephyr applications go into subfolders under `apps/` – one folder per
 zephyr.devcontainer/            ← this repo (devcontainer infrastructure)
 ├── .devcontainer/
 │   ├── Dockerfile
-│   └── devcontainer.json
+│   └── devcontainer.json       ← workspaceFolder = /workspace/apps
 ├── README.md
-└── apps/                       ← local only, intentionally not part of this repo (.gitignore)
+└── apps/                       ← opened by default; local only, not part of this repo (.gitignore)
     ├── project_a/
     │   ├── CMakeLists.txt
     │   ├── prj.conf
@@ -52,6 +52,8 @@ zephyr.devcontainer/            ← this repo (devcontainer infrastructure)
     └── project_b/
         └── ...
 ```
+
+To access `.devcontainer`, `docs/`, or other repo-root files from inside the running container, open the parent folder instead: Command Palette → *"File: Open Folder"* → `/workspace`.
 
 The reasoning behind this separation: the devcontainer is developed and versioned independently of your own projects. Your projects belong in their own repository – e.g. one per folder under `apps/`, or a shared project repo tracking the whole workspace folder.
 
