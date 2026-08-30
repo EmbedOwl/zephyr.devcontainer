@@ -1,78 +1,76 @@
 # Zephyr RTOS Dev Container
 
-Development Container für Zephyr RTOS Entwicklung mit Raspberry Pi Pico/Pico W.
+Ready-to-use dev container for Zephyr RTOS development on Raspberry Pi Pico / Pico W (RP2040). Includes toolchain, SDK, and all required build tools – no manual host setup needed.
 
-## Voraussetzungen
+## Table of Contents
 
-- Visual Studio Code
-- Docker
-- Dev Containers Extension ([ms-vscode-remote.remote-containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Structure: Devcontainer and Projects Are Separate](#structure-devcontainer-and-projects-are-separate)
+- [Included Components](#included-components)
+- [Hardware Access](#hardware-access)
 
-## Installation
+## Prerequisites
 
-### Repository klonen
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Docker](https://www.docker.com/)
+- VS Code extension [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+## Quick Start
 
 ```bash
 git clone https://github.com/EmbedOwl/zephyr.devcontainer.git
 cd zephyr.devcontainer
-```
-
-### Container in VS Code starten
-
-```bash
 code .
 ```
 
-VS Code erkennt automatisch die Dev Container Konfiguration und zeigt eine Benachrichtigung an.
+VS Code automatically detects the devcontainer configuration:
 
-**Option 1:** Klick auf "Reopen in Container" in der Benachrichtigung
+- **Notification** → *"Reopen in Container"*, or
+- **Command Palette** (`Ctrl+Shift+P`) → *"Dev Containers: Reopen in Container"*
 
-**Option 2:** Command Palette (`Ctrl+Shift+P`) → "Dev Containers: Reopen in Container"
+The first build takes about 5–10 minutes (toolchain and SDK download). Afterwards, a complete Zephyr development environment is ready inside the container.
 
-Der initiale Build dauert ca. 5-10 Minuten. Nach Abschluss werden automatisch Zephyr SDK und alle Dependencies installiert.
+## Structure: Devcontainer and Projects Are Separate
 
-## Enthaltene Komponenten
+This repository contains **only the devcontainer infrastructure** – no application code of its own. The folder this repo lives in is mounted 1:1 into the container at `/workspace` (see `workspaceFolder` in `.devcontainer/devcontainer.json`).
 
-## Enthaltene Komponenten
+Your own Zephyr applications go into subfolders under `apps/` – one folder per project, each with its own `CMakeLists.txt`, `prj.conf`, `boards/` and `src/` directory:
 
-Der Container enthält:
+```
+zephyr.devcontainer/            ← this repo (devcontainer infrastructure)
+├── .devcontainer/
+│   ├── Dockerfile
+│   └── devcontainer.json
+├── README.md
+└── apps/                       ← local only, intentionally not part of this repo (.gitignore)
+    ├── project_a/
+    │   ├── CMakeLists.txt
+    │   ├── prj.conf
+    │   ├── boards/
+    │   └── src/
+    └── project_b/
+        └── ...
+```
 
-- Zephyr RTOS SDK (v0.16.8)
-- West Build Tool
-- ARM Embedded GCC Toolchain
-- Python Environment mit Zephyr Dependencies
-- CMake, Ninja, Device Tree Compiler
-- Git, vim, minicom
-- J-Link Debugger Support (optional)
+The reasoning behind this separation: the devcontainer is developed and versioned independently of your own projects. Your projects belong in their own repository – e.g. one per folder under `apps/`, or a shared project repo tracking the whole workspace folder.
 
-## Container-Verwaltung
+## Included Components
 
-### Container neu bauen
+| Component           | Details                                                                  |
+| ------------------- | ------------------------------------------------------------------------ |
+| Base image          | `debian:trixie-slim`                                                     |
+| Zephyr RTOS         | `v4.4-branch`, including HAL blobs for `hal_rpi_pico` and `hal_infineon`  |
+| Zephyr SDK          | `v1.0.1`, ARM toolchain (`arm-zephyr-eabi`)                               |
+| Build tools         | West, CMake (+ `cmake-curses-gui`), Ninja, Device Tree Compiler, gperf    |
+| Debug/Flash         | OpenOCD, gdb-multiarch, minicom, optional J-Link                         |
+| Python              | Dedicated venv (`/opt/venv`) with all Zephyr requirements                 |
+| Shell/CLI utilities | git, curl, wget, vim, nano, mc, sudo, usbutils                            |
+| SSH                 | OpenSSH server pre-installed                                             |
+| Editor integration  | C/C++, CMake Tools, Cortex-Debug (pre-installed)                         |
 
-Nach Änderungen an `.devcontainer/devcontainer.json` oder `.devcontainer/Dockerfile`:
+The Python venv and Zephyr environment are activated automatically when a shell starts (`~/.bashrc`).
 
-Command Palette → "Dev Containers: Rebuild Container"
+## Hardware Access
 
-### Verbindung trennen
-
-Klick auf grünen Container-Button (links unten) → "Close Remote Connection"
-
-## Troubleshooting
-
-**Container startet nicht**
-- Docker Status prüfen: `docker ps`
-- Dev Containers Extension installiert?
-- Docker-Logs im VS Code Terminal prüfen
-
-**USB-Geräte nicht sichtbar**
-- Windows/Mac: Docker Desktop USB-Passthrough konfigurieren
-- Linux: User muss in `dialout` Gruppe sein
-
-**Permission denied**
-- Container läuft als Root
-- Dateien außerhalb des Containers gehören dem Host-User
-
-## Weitere Informationen
-
-- Container-Details: [.devcontainer/README.md](.devcontainer/README.md)
-- Zephyr Dokumentation: [https://docs.zephyrproject.org](https://docs.zephyrproject.org)
+The container runs with `--privileged` and mounts `/dev` as well as `/dev/bus/usb`, so the Pico/Pico W can be accessed via USB (flashing, serial) directly from inside the container – no additional passthrough configuration required.

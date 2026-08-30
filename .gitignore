@@ -33,3 +33,20 @@ secrets.h
 *.key
 *.pem
 !**/secrets.h.template
+
+# Projekt-/Workspace-Inhalte (gehören nicht in das Devcontainer-Repo)
+apps/
+docs/
+scripts/
+_documentation_backup/
+README_OLD.md
+README_WORKSPACE.md
+CONTAINER.md
+SETUP.md
+WEST_REFERENCE.md
+ZEPHYR_STRUCTURE.md
+TEST-DELETE.py
+zephyr-workspace.code-workspace
+.instructions-user.md
+.instructions-bookstack.md
+.vscode/
