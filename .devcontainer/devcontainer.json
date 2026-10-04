@@ -7,10 +7,7 @@ Cont{
   "remoteUser": "root",
 
   "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-    "source=/dev/bus/usb,target=/dev/bus/usb,type=bind",
-    "type=bind,source=/run/media,target=/run/media,bind-propagation=rshared",
-    "type=bind,source=/dev,target=/dev,bind-propagation=rslave"
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
   ],
   
   "postCreateCommand": "mkdir -p /workspace/apps && echo '✅ Zephyr Dev Container ready'",
@@ -34,5 +31,16 @@ Cont{
   
   "runArgs": [
     "--privileged"
-  ]
+  ],
+
+  "overrides": {
+    "linux": {
+      "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+        "source=/dev/bus/usb,target=/dev/bus/usb,type=bind",
+        "type=bind,source=/run/media,target=/run/media,bind-propagation=rshared",
+        "type=bind,source=/dev,target=/dev,bind-propagation=rslave"
+      ]
+    }
+  }
 }
