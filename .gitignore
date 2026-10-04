@@ -35,7 +35,8 @@ secrets.h
 !**/secrets.h.template
 
 # Projekt-/Workspace-Inhalte (gehören nicht in das Devcontainer-Repo)
-apps/
+apps/*
+!apps/.gitkeep
 docs/
 scripts/
 _documentation_backup/
